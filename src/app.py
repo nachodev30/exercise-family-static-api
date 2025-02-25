@@ -13,29 +13,26 @@ app = Flask(__name__)
 app.url_map.strict_slashes = False
 CORS(app)
 
-# create the jackson family object
 jackson_family = FamilyStructure("Jackson")
 
 
-
-# Handle/serialize errors like a JSON object
 @app.errorhandler(APIException)
 def handle_invalid_usage(error):
     return jsonify(error.to_dict()), error.status_code
 
-# generate sitemap with all your endpoints
+
 @app.route('/')
 def sitemap():
     return generate_sitemap(app)
 
-##### Realiza GET total####
+
 @app.route('/members', methods=['GET'])
 def get_all_members():
     members = jackson_family.get_all_members()
   
     return jsonify(members), 200
 
-##### Realiza Get individual####
+
 @app.route('/member/<int:id>', methods =['GET'])
 def get_single_member(id):
     
@@ -45,7 +42,7 @@ def get_single_member(id):
    
     return jsonify({"error": "Miembro en la familia no encontrado"}), 404
    
-##### Realiza POST ####
+
 @app.route('/member', methods =['POST'])
 def add_miembro():
     member = request.json
@@ -57,8 +54,7 @@ def add_miembro():
     return jsonify({"mensaje": "Un nuevo miembro añadido a la familia"}), 200
     
   
-
-##### Realiza DELETE ####  
+ 
 @app.route('/member/<int:id>', methods =['DELETE'])
 def delete_single_member(id):
    
